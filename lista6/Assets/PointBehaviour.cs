@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using project;
+
 public class PointBehaviour : MonoBehaviour
 {
 

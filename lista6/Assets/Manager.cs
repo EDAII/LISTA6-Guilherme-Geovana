@@ -15,7 +15,7 @@ public class Manager : MonoBehaviour {
     public float[] yRange = { 0, 0 };
 
     int pointsAumont = 100;
-    Point[] points;
+    public Point[] points;
 
     [SerializeField]
     Camera mainCamera;
