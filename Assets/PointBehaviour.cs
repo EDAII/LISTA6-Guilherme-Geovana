@@ -30,6 +30,13 @@ public class PointBehaviour : MonoBehaviour
 
         Collider[] collisions = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
 
+        Point[] points = Manager.instance.points;
+
+        for (int i=0; i < points.Length && points[i] != null; i++) {
+            if( points[i].position.x == this.transform.position.x ){
+                return true;
+            }
+        }
 
         return (collisions.Length != 1);
     }
