@@ -146,6 +146,90 @@ public class Manager : MonoBehaviour {
         return 0;
     }
 
+    Point medianOfMedians(Point[] points, k){
+
+        List<Point> medians = new List<Point>();
+
+        //divide into sublists of five and sort it
+        for(int i=0; i<points.Length && points[i] != null; i+=5 ){
+
+            points = sort(points, i);
+
+            //get the median of the sublists
+            int median_index;
+            if(i <= points.Length - 5)
+                median_index = i + 2;
+            else
+                median_index = Math.Floor((points.Length - i)/2);
+
+
+            //add to list of sublists medians
+            medians.add(points[median_index]);
+
+        }
+
+        Point[] mediansArray = medians.ToArray();
+        Point pivot;
+
+        //select the pivot to partition array
+        if (medians.Length <= 5){
+
+            Array.Sort(mediansArray, delegate(Point pointA, Point pointB) {
+                                return pointA.position.x.CompareTo(PointB.position.x);
+            });
+            pivot = points[ Math.Floor(mediansArray.Length/2)];
+
+        } else {
+            pivot = medianOfMedians(mediansArray, Math.Floor(mediansArray.Length/2));
+        }
+
+        List<Point> smaller = new List<Point>();
+        List<Point> bigger = new List<Point>();
+
+        //put smaller elements to the left, and bigger elements to the right of the pivot
+        for(int i=0; i<points.Length && points[i] != null; i++){
+            if(points[i].position.x < pivot.position.x  )
+                smaller.add(points[i]);
+            else if (points[i].position.x > pivot.position.x )
+                bigger.add(points[i]);
+        }
+
+        Point[] smaller = smaller.ToArray();
+        Point[] bigger = bigger.ToArray();
+
+        // if k is equal to j then we found the kth element of the list(in this case, the median), return it
+        //if not, then continue searching
+        int j = smaller.Length
+        if (k < j)
+            return medianOfMedians(smaller,k)
+        else if (i > k)
+            return medianOfMedians(bigger,k-j-1)
+        else
+            return pivot;
+
+
+
+    }
+
+    Point[] sort(Point[] points, int start){
+        Point[] sorted = new Point[5];
+
+        for(int i=0; i < 5 && (start+i) < points.Length && points[start + i] != null ; i++){
+            sorted[i] = points[start + i];
+        }
+
+        Array.Sort(sorted, delegate(Point pointA, Point pointB) {
+                        return pointA.position.x.CompareTo(PointB.position.x);
+        });
+
+        for(int i=0; i < 5 && (start+i) < points.Length && points[start + i] != null ; i++){
+            points[start + i] = sorted[i];
+        }
+
+        return points;
+
+    }
+
     float FindClosest(int start, int end, ref Point a, ref Point b) {
 
         if (end == start) {
